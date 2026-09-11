@@ -1,0 +1,3 @@
+let muted=localStorage.getItem('pea-muted')==='1',ctx;
+export function bindMute(){document.querySelectorAll('[data-mute]').forEach(b=>{const paint=()=>b.textContent=muted?'🔇':'🔊';paint();b.onclick=()=>{muted=!muted;localStorage.setItem('pea-muted',muted?'1':'0');paint()}})}
+export function sound(kind){if(muted)return;ctx ||= new (window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g).connect(ctx.destination);const now=ctx.currentTime;o.frequency.setValueAtTime(kind==='right'?520:190,now);o.frequency.exponentialRampToValueAtTime(kind==='right'?880:100,now+.22);g.gain.setValueAtTime(.14,now);g.gain.exponentialRampToValueAtTime(.001,now+.3);o.start();o.stop(now+.31)}
